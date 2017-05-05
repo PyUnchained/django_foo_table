@@ -1,0 +1,92 @@
+{% load crispy_forms_tags %}
+{% load static %}
+
+<div id = 'table_foo_form_holder'>
+{% crispy form %}
+</div>
+
+ <div class="table_foo_loader"></div>
+<div id = 'table_foo_form_response' style="max-width:50%">
+	
+</div>
+
+
+
+<script
+			  src="https://code.jquery.com/jquery-3.2.1.min.js"
+			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+			  crossorigin="anonymous"></script>
+<link rel="stylesheet" href="{% static 'chosen.css'%}">
+<script type="text/javascript" src="{% static 'chosen.jquery.js' %}"></script>
+<script type="text/javascript">
+
+	function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+  }
+  
+  function BindSubmitButton(btn) {
+
+  	$(".selectmultiple").chosen();
+    btn.click(function(e) {
+      
+      e.preventDefault();
+      var csrftoken = getCookie('csrftoken');
+      $('.table_foo_loader').css('display', 'block');
+      $.ajax({
+          url: "{% url 'export_foo_table_excel' source_ct.pk %}",
+          type: "POST",
+          data: $('#table_foo_helper_form').serialize(),
+          success: function(data) {
+	          	$('.table_foo_loader').css('display', 'none');
+	          	$('#table_foo_form_response').html(' ');
+              if (!(data['success'])) {
+              		console.log('Out1');
+                  // If an error occured server side....
+                  $('#table_foo_form_holder').html(
+                    data['form_with_errors']);
+
+                  if (data['msg']) {
+                  	$('#table_foo_form_response').html(
+                    '<div class = "alert alert-error"> <p>' + data['msg'] +'</p></div>');
+                  }
+                  
+                  if (data['reset_button']) {
+                  	console.log('Out1.2');
+                    BindSubmitButton($('#table_foo_helper_form_submit'));
+                    
+                  }
+              }
+              else {
+	              	console.log('Out1.3');
+                  // Here you can show the user a success message or do whatever you need
+                  $('#table_foo_form_response').html("<div class = 'alert alert-success'>" +
+                    data['msg'] + "</div>");
+
+                  
+              }
+          },
+          error: function () {
+          		$('#table_foo_form_response').html(' ');
+          		$('.table_foo_loader').css('display', 'none');
+              $('#table_foo_form_response').html('<div class = "alert alert-success"><p>A server error has occured. Please try again later. If the problem persists, please contact the system administrator.</p></div>');
+          }
+      });
+    });
+
+  };
+
+  BindSubmitButton($('#table_foo_helper_form_submit'));
+
+</script>

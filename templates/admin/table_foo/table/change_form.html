@@ -1,0 +1,17 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls static admin_list %}
+{% load table_foo_tags %}
+
+{% block content %}
+
+{% if original == None %}
+<div class ='table_foo_warning'>In order to create pivot tables, complete and save the form.</div>
+{% else %}
+{% table_foo_helper original %}
+{% endif %}
+
+{{block.super}}
+
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static 'css/table_foo.css' %}" />{% endblock %}

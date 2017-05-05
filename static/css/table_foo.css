@@ -1,0 +1,48 @@
+.checkbox {
+	margin-right: 40px;
+	padding-bottom: 20px;
+}
+
+#table_foo_helper_form .control-label {
+	font-size: 15px;
+}
+
+#table_foo_helper_form legend {
+	font-size: 20px;
+}
+
+.table_foo_warning, #table_foo_helper_form .alert-error {
+	background-color: #ff2424;
+	color: white;
+	padding: 20px;
+	max-width: 500px;
+	border-radius: 10px;
+	text-align: center;
+}
+
+#table_foo_helper_form .control-group {
+	display: inline-block;
+}
+
+.table_foo_loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    display: none;
+
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
